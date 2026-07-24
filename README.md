@@ -111,37 +111,46 @@ I built this portfolio not just to show what I know, but to push my limits — e
 
 ## 📁 Project Structure
 
+```
 ammad-portfolio/
-├── app/
-│ ├── api/
-│ │ └── chat/
-│ │ └── route.ts # Groq AI API route
-│ ├── globals.css # Global styles + keyframes
-│ ├── layout.tsx # Root layout + fonts
-│ └── page.tsx # Main page
-├── components/
-│ ├── ui/
-│ │ ├── navbar.tsx # Smart responsive navbar
-│ │ ├── flame-transition.tsx # Flame divider component
-│ │ ├── spotlight.tsx # Spotlight SVG effect
-│ │ ├── splite.tsx # Spline 3D wrapper
-│ │ └── gooey-text-morphing.tsx # Gooey text effect
-│ ├── page-loader.tsx # First-visit loader
-│ ├── site-wrapper.tsx # Session-based loader gate
-│ ├── hero-section.tsx # Hero with 3D + animations
-│ ├── about-section.tsx # About with glass card
-│ ├── skills-section.tsx # Marquee + skill cards
-│ ├── projects-section.tsx # 3D tilt + filter cards
-│ ├── experience-section.tsx # Timeline + flip cards
-│ ├── contact-section.tsx # EmailJS contact form
-│ ├── chatbot.tsx # AI chatbot component
-│ └── footer.tsx # Glowing minimal footer
-├── public/
-│ └── resume.pdf # Downloadable CV
-├── .env.local # API keys (not committed)
-├── next.config.ts # Next.js config
-├── tailwind.config.ts # Tailwind config
-└── README.md # This file
+│
+├── 📁 app/
+│ ├── 📁 api/
+│ │ └── 📁 chat/
+│ │ └── route.ts
+│ ├── globals.css
+│ ├── layout.tsx
+│ └── page.tsx
+│
+├── 📁 components/
+│ ├── 📁 ui/
+│ │ ├── navbar.tsx
+│ │ ├── flame-transition.tsx
+│ │ ├── spotlight.tsx
+│ │ ├── splite.tsx
+│ │ └── gooey-text-morphing.tsx
+│ │
+│ ├── page-loader.tsx
+│ ├── site-wrapper.tsx
+│ ├── hero-section.tsx
+│ ├── about-section.tsx
+│ ├── skills-section.tsx
+│ ├── projects-section.tsx
+│ ├── experience-section.tsx
+│ ├── contact-section.tsx
+│ ├── chatbot.tsx
+│ └── footer.tsx
+│
+├── 📁 public/
+│ └── resume.pdf
+│
+├── .env.local
+├── .gitignore
+├── next.config.ts
+├── tailwind.config.ts
+├── package.json
+└── README.md
+```
 
 
 ---
