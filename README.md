@@ -1,36 +1,283 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Muhammad Ammad — Personal Portfolio
 
-## Getting Started
+<div align="center">
 
-First, run the development server:
+![Portfolio Preview](public/preview.png)
+
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-38BDF8?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+[![Framer Motion](https://img.shields.io/badge/Framer_Motion-latest-purple?style=for-the-badge&logo=framer)](https://www.framer.com/motion/)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+
+**A modern, animated, and fully responsive developer portfolio built with cutting-edge web technologies.**
+
+[🌐 Live Demo](https://ammmad-portfolio.netlify.app) · [📧 Contact](mailto:official.muhammadammad@gmail.com) · [💼 LinkedIn](https://linkedin.com/in/muhammad-ammad)
+
+</div>
+
+---
+
+## ✨ Overview
+
+This is my personal portfolio website — designed and developed from scratch to showcase my skills, projects, and professional journey as a **Frontend Developer** based in **Karachi, Pakistan**.
+
+I built this portfolio not just to show what I know, but to push my limits — experimenting with 3D animations, particle effects, physics-based interactions, and AI integration to create an experience that stands out.
+
+---
+
+## 🚀 Features
+
+### 🎭 Animated Loader
+- Letter-by-letter name reveal animation on first visit
+- Smooth blur-in effect using Framer Motion
+- Session-based — only plays once per browser session
+- Orbitron font for futuristic feel
+
+### 🏠 Hero Section
+- Interactive 3D robot model via Spline
+- Gooey text morphing effect for role titles
+- Floating developer symbols background (CSS animations)
+- Spotlight effect with animated grid overlay
+- Social links with hover animations
+
+### 👤 About Section
+- Glassmorphism 3D card with hover tilt effect
+- Floating skill bubbles in background
+- Animated stats counter
+- Human-written bio
+
+### 💻 Skills Section
+- Infinite marquee rows (3 rows, alternating directions)
+- Animated progress bars with scroll trigger
+- 4 categorized skill cards (Frontend / Styling / Backend / Tools)
+- Hover lift + glow effects
+
+### 🗂️ Projects Section
+- 9 projects with filter system (All / AI / Client / Portfolio / Tool / Clone)
+- 3D tilt cards on mouse move with glare effect
+- AnimatePresence for smooth filter transitions
+- GitHub + Live links per project
+
+### 📅 Experience Section
+- Animated timeline with scroll-draw effect
+- 3D flip cards — front shows info, back shows details
+- Education and Certifications included
+- Stagger animations on scroll
+
+### 📬 Contact Section
+- Glassmorphism form with real-time validation
+- EmailJS integration — emails land directly in Gmail
+- Focus glow on inputs
+- Success/error states with animations
+
+### 🤖 AI Chatbot
+- Powered by Groq API (llama-3.1-8b-instant)
+- Trained on all portfolio data
+- Typing animation for responses
+- Suggested questions on open
+- Floating FAB button with pulse animation
+
+### 🔥 Flame Transitions
+- CSS flame divider between sections
+- Ember particle animations
+- Triggers on scroll into view
+
+### 🧭 Smart Navbar
+- Full navbar at top of page
+- Scrolled state: floating pill links only (desktop)
+- Mobile: hamburger menu always
+- Active link indicator with spring animation
+- Hide on scroll down, show on scroll up
+
+---
+
+## 🛠️ Tech Stack
+
+| Category | Technology |
+|----------|-----------|
+| **Framework** | Next.js 15 (App Router) |
+| **Language** | TypeScript |
+| **Styling** | Tailwind CSS |
+| **Animations** | Framer Motion |
+| **3D Scene** | Spline (@splinetool/react-spline) |
+| **AI Chatbot** | Groq API (LLaMA 3.1) |
+| **Email** | EmailJS |
+| **Fonts** | Orbitron, Space Grotesk (Google Fonts) |
+| **Icons** | Lucide React |
+| **Deployment** | Vercel / Netlify |
+
+---
+
+## 📁 Project Structure
+
+ammad-portfolio/
+├── app/
+│ ├── api/
+│ │ └── chat/
+│ │ └── route.ts # Groq AI API route
+│ ├── globals.css # Global styles + keyframes
+│ ├── layout.tsx # Root layout + fonts
+│ └── page.tsx # Main page
+├── components/
+│ ├── ui/
+│ │ ├── navbar.tsx # Smart responsive navbar
+│ │ ├── flame-transition.tsx # Flame divider component
+│ │ ├── spotlight.tsx # Spotlight SVG effect
+│ │ ├── splite.tsx # Spline 3D wrapper
+│ │ └── gooey-text-morphing.tsx # Gooey text effect
+│ ├── page-loader.tsx # First-visit loader
+│ ├── site-wrapper.tsx # Session-based loader gate
+│ ├── hero-section.tsx # Hero with 3D + animations
+│ ├── about-section.tsx # About with glass card
+│ ├── skills-section.tsx # Marquee + skill cards
+│ ├── projects-section.tsx # 3D tilt + filter cards
+│ ├── experience-section.tsx # Timeline + flip cards
+│ ├── contact-section.tsx # EmailJS contact form
+│ ├── chatbot.tsx # AI chatbot component
+│ └── footer.tsx # Glowing minimal footer
+├── public/
+│ └── resume.pdf # Downloadable CV
+├── .env.local # API keys (not committed)
+├── next.config.ts # Next.js config
+├── tailwind.config.ts # Tailwind config
+└── README.md # This file
+
+
+---
+
+## ⚙️ Getting Started
+
+### Prerequisites
+- Node.js 18+
+- npm or yarn
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/ammad32/ammad-portfolio.git
+
+# Navigate to project
+cd ammad-portfolio
+
+# Install dependencies
+npm install
+
+# Create environment file
+cp .env.example .env.local
+```
+
+### Environment Variables
+
+Create `.env.local` in root:
+
+```env
+# EmailJS (for contact form)
+NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_service_id
+NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_template_id
+NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_public_key
+
+# Groq AI (for chatbot)
+GROQ_API_KEY=your_groq_api_key
+```
+
+### Run Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Build for Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🌐 Deployment
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Vercel (Recommended)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm install -g vercel
+vercel
+```
 
-## Deploy on Vercel
+Add environment variables in Vercel dashboard under **Settings → Environment Variables**.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Netlify
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run build
+# Upload the .next folder or connect GitHub repo
+```
+
+---
+
+## 📸 Sections Preview
+
+| Section | Description |
+|---------|-------------|
+| 🎭 Loader | Letter-by-letter name animation |
+| 🏠 Hero | 3D robot + gooey text + dev particles |
+| 👤 About | Glass card + floating skill bubbles |
+| 💻 Skills | Infinite marquee + progress cards |
+| 🗂️ Projects | 3D tilt cards + category filter |
+| 📅 Experience | Animated timeline + flip cards |
+| 📬 Contact | Glass form + EmailJS |
+| 🤖 Chatbot | Groq AI trained on portfolio data |
+
+---
+
+## 🔑 Key Decisions
+
+**Why Next.js?**
+App Router gives server-side API routes — perfect for keeping AI API keys secure server-side.
+
+**Why Groq over OpenAI?**
+Groq is completely free, extremely fast (LLaMA 3.1), and requires no credit card.
+
+**Why Framer Motion?**
+Best-in-class animation library for React — declarative, performant, and powerful.
+
+**Why Spline for 3D?**
+Zero Three.js boilerplate — drag and drop 3D scenes that work instantly in React.
+
+---
+
+## 📬 Contact
+
+**Muhammad Ammad**
+Frontend Developer — Karachi, Pakistan
+
+| Platform | Link |
+|----------|------|
+| 📧 Email | official.muhammadammad@gmail.com |
+| 💼 LinkedIn | linkedin.com/in/muhammad-ammad |
+| 🐙 GitHub | github.com/ammad32 |
+| 🌐 Portfolio | ammmad-portfolio.netlify.app |
+
+---
+
+## 📄 License
+
+MIT License — feel free to use this as inspiration for your own portfolio.
+Just don't copy it as-is and claim it as yours. Build something original! 🚀
+
+
+---
+
+<div align="center">
+
+**Designed & Built with ❤️ by Muhammad Ammad**
+
+*"I started coding not because it was trending — but because I wanted to build things that actually work."*
+
+⭐ Star this repo if you found it helpful!
+
+</div>

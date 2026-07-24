@@ -10,6 +10,10 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-space: var(--font-space);
+  --font-orbitron: var(--font-orbitron);
+  --font-righteous: var(--font-righteous);
+  --font-nosifer: 'Nosifer', cursive;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -23,4 +27,44 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Custom class as backup */
+.font-nosifer {
+  font-family: 'Nosifer', cursive !important;
+}
+
+@keyframes spotlight {
+  0% { opacity: 0; transform: translate(-72%, -62%) scale(0.5); }
+  100% { opacity: 1; transform: translate(-50%, -40%) scale(1); }
+}
+.animate-spotlight {
+  animation: spotlight 2s ease 0.75s 1 forwards;
+}
+
+@keyframes devFloat {
+  0% {
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+    opacity: inherit;
+  }
+  25% {
+    transform: translateY(-18px) translateX(8px) rotate(2deg);
+  }
+  50% {
+    transform: translateY(-8px) translateX(-6px) rotate(-1deg);
+  }
+  75% {
+    transform: translateY(-22px) translateX(4px) rotate(1deg);
+  }
+  100% {
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+    opacity: inherit;
+  }
+}
+
+@keyframes scanLine {
+  0% { opacity: 0; transform: translateX(-10%); }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(10%); }
 }
