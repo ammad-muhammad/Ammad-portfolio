@@ -12,7 +12,7 @@
 
 **A modern, animated, and fully responsive developer portfolio built with cutting-edge web technologies.**
 
-[🌐 Live Demo](ammad-portfolio-wine.vercel.app) · [📧 Contact](mailto:official.muhammadammad@gmail.com) · [💼 LinkedIn](https://linkedin.com/in/muhammad-ammad)
+[🌐 Live Demo](https://ammad-portfolio-wine.vercel.app/) · [📧 Contact](mailto:official.muhammadammad@gmail.com) · [💼 LinkedIn](https://linkedin.com/in/muhammad-ammad)
 
 </div>
 
