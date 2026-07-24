@@ -295,7 +295,7 @@ export function ContactSection() {
               <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
 
               {/* Success state */}
-              {formState === "success" ? (
+              {(formState as string) === "success" ? (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
