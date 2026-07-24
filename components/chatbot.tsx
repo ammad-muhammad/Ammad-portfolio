@@ -291,7 +291,7 @@ export function Chatbot() {
                 </div>
                 <div>
                   <p className="text-white font-semibold text-sm">Ammad's Assistant</p>
-                  <p className="text-green-400 text-xs">Online • Powered by Gemini AI</p>
+                  
                 </div>
               </div>
               <button
