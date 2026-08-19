@@ -29,7 +29,7 @@ const SKILLS = [
 // ── Stats ────────────────────────────────────────────────────
 const STATS = [
   { value: "1",  label: "Years Experience" },
-  { value: "5", label: "Projects Built"   },
+  { value: "2", label: "Projects Built"   },
   { value: "2",   label: "Certifications"   },
 ];
 
