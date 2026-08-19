@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 
 import { Spotlight } from '@/components/ui/spotlight'
 import { GooeyText } from '@/components/ui/gooey-text-morphing'
-import { Mail, ChevronDown } from 'lucide-react'
+import { Mail } from 'lucide-react'
 
 // ── Dev Particles Background ─────────────────────────────────
 const DEV_SYMBOLS = [
@@ -15,7 +15,7 @@ const DEV_SYMBOLS = [
 
 function DevParticles() {
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
+    <div className="absolute inset-0 overflow-hidden pointer-events-none select-none transform-gpu">
       {DEV_SYMBOLS.map((symbol, i) => {
         const left = ((i * 37.7) % 90) + 5;
         const top = ((i * 23.3) % 85) + 5;
@@ -26,7 +26,7 @@ function DevParticles() {
         return (
           <div
             key={i}
-            className={`absolute font-mono font-bold text-cyan-400 ${size} ${opacity}`}
+            className={`absolute font-mono font-bold text-cyan-400 ${size} ${opacity} will-change-transform`}
             style={{
               left: `${left}%`,
               top: `${top}%`,
@@ -126,7 +126,7 @@ export function HeroSection() {
   return (
     <section
       id="home"
-      className="relative w-full h-[100dvh] bg-[#030712] overflow-hidden flex flex-col"
+      className="relative w-full h-[100dvh] bg-[#030712] overflow-hidden flex flex-col snap-start transform-gpu"
     >
       <DevParticles />
       {/* Spotlight */}
@@ -354,3 +354,5 @@ export function HeroSection() {
     </section>
   );
 }
+
+

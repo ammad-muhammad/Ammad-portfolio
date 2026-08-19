@@ -119,7 +119,7 @@ function MarqueeRow({
       <motion.div
         ref={containerRef}
         style={{ x }}
-        className="flex gap-3 w-max"
+        className="flex gap-3 w-max will-change-transform transform-gpu"
       >
         {doubled.map((skill, i) => (
           <motion.div
@@ -127,7 +127,7 @@ function MarqueeRow({
             whileHover={{ scale: 1.08, y: -3 }}
             transition={{ type: "spring", stiffness: 300, damping: 20 }}
             className="flex items-center gap-2 px-5 py-2.5 rounded-full
-                       border backdrop-blur-sm cursor-default select-none
+                       border bg-[#0a0f1e]/80 cursor-default select-none
                        whitespace-nowrap"
             style={{
               background: `${skill.color}12`,

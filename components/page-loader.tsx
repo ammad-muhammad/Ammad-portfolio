@@ -52,8 +52,8 @@ export function PageLoader({ onComplete }: PageLoaderProps) {
             fontFamily="Orbitron, sans-serif"
             fontSize={fontSize}
             fontWeight={700}
-            revealDuration={2400}
-            vaporizeDuration={2200}
+            revealDuration={1800}
+            vaporizeDuration={1600}
             onComplete={onComplete}
           />
         </div>
@@ -64,7 +64,7 @@ export function PageLoader({ onComplete }: PageLoaderProps) {
             className="h-full bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full"
             initial={{ width: "0%" }}
             animate={{ width: "100%" }}
-            transition={{ duration: 5.5, ease: "linear" }}
+            transition={{ duration: 3.6, ease: "linear" }}
           />
         </div>
       </motion.div>

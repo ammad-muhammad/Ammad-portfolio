@@ -3,10 +3,10 @@ import React, { useRef, useEffect, useState, useMemo } from "react";
 
 type Particle = {
   x: number; y: number; originalX: number; originalY: number;
-  color: string; opacity: number; originalAlpha: number;
+  colorPrefix: string; opacity: number; originalAlpha: number;
   velocityX: number; velocityY: number; angle: number; speed: number;
   shouldFadeQuickly?: boolean;
-  isAmmad: boolean; // For different colors
+  isAmmad: boolean;
 };
 
 type TextBoundaries = { left: number; right: number; width: number; };
@@ -16,7 +16,7 @@ declare global {
 }
 
 type Props = {
-  text: string; // Expected "Muhammad Ammad"
+  text: string;
   fontFamily?: string;
   fontSize?: number;
   fontWeight?: number;
@@ -30,8 +30,8 @@ export default function VaporizeText({
   fontFamily = "sans-serif",
   fontSize = 80,
   fontWeight = 700,
-  revealDuration = 2500,
-  vaporizeDuration = 2200,
+  revealDuration = 1800,
+  vaporizeDuration = 1600,
   onComplete,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -41,16 +41,17 @@ export default function VaporizeText({
   const doneRef = useRef(false);
   const [size, setSize] = useState({ w: 0, h: 0 });
 
+  // Cap DPR at 1.5 to prevent memory explosion & frame drops on 3x-4x DPR screens
   const dpr = useMemo(() => {
     if (typeof window === "undefined") return 1;
-    return window.devicePixelRatio * 1.5;
+    return Math.min(window.devicePixelRatio || 1, 1.5);
   }, []);
 
   // Observe wrapper size
   useEffect(() => {
     const el = wrapperRef.current;
     if (!el) return;
-    const ro = new ResizeObserver(entries => {
+    const ro = new ResizeObserver((entries) => {
       for (const e of entries) {
         setSize({ w: e.contentRect.width, h: e.contentRect.height });
       }
@@ -61,11 +62,11 @@ export default function VaporizeText({
     return () => ro.disconnect();
   }, []);
 
-  // Initialize Particles
+  // Initialize Particles with dynamic sample rate (~400 particles max)
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || !size.w || !size.h) return;
-    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     canvas.style.width = size.w + "px";
@@ -77,18 +78,15 @@ export default function VaporizeText({
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.font = fontStr;
     // @ts-ignore
-    ctx.letterSpacing = `${(fontSize * 0.1) * dpr}px`;
+    ctx.letterSpacing = `${fontSize * 0.08 * dpr}px`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
 
-    // Measure split for "Ammad" color
     const firstName = "Muhammad";
     const firstMetrics = ctx.measureText(firstName + " ");
     const fullMetrics = ctx.measureText(text);
     const startX = canvas.width / 2 - fullMetrics.width / 2;
-    const ammadStartX = startX + firstMetrics.width;
 
-    // Draw white for sampling
     ctx.fillStyle = "white";
     ctx.fillText(text, canvas.width / 2, canvas.height / 2);
 
@@ -100,22 +98,30 @@ export default function VaporizeText({
 
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const data = imageData.data;
-    const currentDPR = canvas.width / size.w;
-    const sampleRate = Math.max(1, Math.round(currentDPR / 3));
-    const particles: Particle[] = [];
 
-    for (let y = 0; y < canvas.height; y += sampleRate) {
-      for (let x = 0; x < canvas.width; x += sampleRate) {
+    // Calculate sample rate to keep particle count ~400-600 max
+    const particleStep = Math.max(3, Math.floor((fontSize * dpr) / 12));
+    const particles: Particle[] = [];
+    const ammadStartX = startX + firstMetrics.width;
+
+    for (let y = 0; y < canvas.height; y += particleStep) {
+      for (let x = 0; x < canvas.width; x += particleStep) {
         const idx = (y * canvas.width + x) * 4;
-        if (data[idx + 3] > 0) {
-          const originalAlpha = (data[idx + 3] / 255) * (sampleRate / currentDPR);
+        if (data[idx + 3] > 80) {
           const isAmmad = x >= ammadStartX;
           particles.push({
-            x, y, originalX: x, originalY: y,
-            color: isAmmad ? "rgba(34, 211, 238," : "rgba(255, 255, 255,", // Cyan for Ammad
-            opacity: originalAlpha, originalAlpha,
-            velocityX: 0, velocityY: 0, angle: 0, speed: 0,
-            isAmmad
+            x,
+            y,
+            originalX: x,
+            originalY: y,
+            colorPrefix: isAmmad ? "rgba(34, 211, 238," : "rgba(255, 255, 255,",
+            opacity: 1,
+            originalAlpha: 1,
+            velocityX: 0,
+            velocityY: 0,
+            angle: 0,
+            speed: 0,
+            isAmmad,
           });
         }
       }
@@ -140,18 +146,16 @@ export default function VaporizeText({
     let lastTime = performance.now();
 
     const animate = (now: number) => {
-      const dt = (now - lastTime) / 1000;
+      const dt = Math.min((now - lastTime) / 1000, 0.05); // cap delta time
       lastTime = now;
 
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      const particles = particlesRef.current;
-      let allVaporized = true;
-
-      ctx.save();
-      ctx.scale(dpr, dpr);
+      const fontStr = `${fontWeight} ${fontSize * dpr}px ${fontFamily}`;
+      const revealX = boundaries.left + (boundaries.width * revealProgress) / 100;
+      const vaporizeX = boundaries.left + (boundaries.width * vaporizeProgress) / 100;
 
       if (mode === "reveal") {
         revealProgress += dt * 100 / (revealDuration / 1000);
@@ -162,69 +166,80 @@ export default function VaporizeText({
         }
       } else if (mode === "pause") {
         pauseTime += dt;
-        if (pauseTime >= 0.8) {
+        if (pauseTime >= 0.5) {
           mode = "vaporize";
         }
       } else if (mode === "vaporize") {
         vaporizeProgress += dt * 100 / (vaporizeDuration / 1000);
       }
 
-      const revealX = boundaries.left + boundaries.width * revealProgress / 100;
-      const vaporizeX = boundaries.left + boundaries.width * vaporizeProgress / 100;
+      // Render crisp vector text for un-vaporized portion
+      ctx.save();
+      ctx.beginPath();
+      if (mode === "reveal") {
+        ctx.rect(0, 0, revealX, canvas.height);
+      } else if (mode === "pause") {
+        ctx.rect(0, 0, canvas.width, canvas.height);
+      } else {
+        ctx.rect(vaporizeX, 0, canvas.width - vaporizeX, canvas.height);
+      }
+      ctx.clip();
 
-      particles.forEach(p => {
-        // REVEAL LOGIC
-        const isRevealed = p.originalX <= revealX;
-        if (!isRevealed) {
-          allVaporized = false;
-          return; 
-        }
+      ctx.font = fontStr;
+      // @ts-ignore
+      ctx.letterSpacing = `${fontSize * 0.08 * dpr}px`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
 
-        // VAPORIZE LOGIC
-        const shouldVaporize = mode === "vaporize" && p.originalX <= vaporizeX;
-
-        if (shouldVaporize) {
-          if (p.speed === 0) {
-            p.angle = Math.random() * Math.PI * 2;
-            p.speed = (Math.random() * 1.5 + 0.5) * 5;
-            p.velocityX = Math.cos(p.angle) * p.speed;
-            p.velocityY = Math.sin(p.angle) * p.speed;
-            p.shouldFadeQuickly = Math.random() > 0.6;
-          }
-
-          if (p.shouldFadeQuickly) {
-            p.opacity = Math.max(0, p.opacity - dt * 2);
-          } else {
-            const dx = p.originalX - p.x;
-            const dy = p.originalY - p.y;
-            p.velocityX = (p.velocityX + (Math.random()-0.5)*15 + dx*0.002) * 0.97;
-            p.velocityY = (p.velocityY + (Math.random()-0.5)*15 + dy*0.002) * 0.97;
-            p.x += p.velocityX * dt * 25;
-            p.y += p.velocityY * dt * 15;
-            p.opacity = Math.max(0, p.opacity - dt * 0.3);
-          }
-          if (p.opacity > 0.01) allVaporized = false;
-        } else {
-          // Keep at original position if revealed but not vaporized
-          allVaporized = false;
-          ctx.fillStyle = p.color + p.opacity + ")";
-          ctx.fillRect(p.x / dpr, p.y / dpr, 1, 1);
-        }
-
-        if (shouldVaporize && p.opacity > 0) {
-          ctx.fillStyle = p.color + p.opacity + ")";
-          ctx.fillRect(p.x / dpr, p.y / dpr, 1, 1);
-        }
-      });
-
+      const grad = ctx.createLinearGradient(boundaries.left, 0, boundaries.right, 0);
+      grad.addColorStop(0, "#ffffff");
+      grad.addColorStop(0.55, "#e0f2fe");
+      grad.addColorStop(1, "#22d3ee");
+      ctx.fillStyle = grad;
+      ctx.fillText(text, canvas.width / 2, canvas.height / 2);
       ctx.restore();
 
-      if (mode === "vaporize" && vaporizeProgress >= 100 && allVaporized) {
-        if (!doneRef.current) {
-          doneRef.current = true;
-          onComplete?.();
+      // Animate vaporizing particles only during vaporize phase
+      if (mode === "vaporize") {
+        const particles = particlesRef.current;
+        let activeParticles = 0;
+        const particleSize = Math.max(1.5, 2 * dpr);
+
+        particles.forEach((p) => {
+          if (p.originalX <= vaporizeX) {
+            if (p.speed === 0) {
+              p.angle = Math.random() * Math.PI * 2;
+              p.speed = (Math.random() * 1.5 + 0.5) * 4;
+              p.velocityX = Math.cos(p.angle) * p.speed;
+              p.velocityY = Math.sin(p.angle) * p.speed;
+              p.shouldFadeQuickly = Math.random() > 0.5;
+            }
+
+            if (p.shouldFadeQuickly) {
+              p.opacity = Math.max(0, p.opacity - dt * 2.5);
+            } else {
+              p.velocityX = (p.velocityX + (Math.random() - 0.5) * 12) * 0.96;
+              p.velocityY = (p.velocityY + (Math.random() - 0.5) * 12 - 0.5) * 0.96;
+              p.x += p.velocityX * dt * 20;
+              p.y += p.velocityY * dt * 20;
+              p.opacity = Math.max(0, p.opacity - dt * 0.6);
+            }
+
+            if (p.opacity > 0.02) {
+              activeParticles++;
+              ctx.fillStyle = `${p.colorPrefix}${p.opacity.toFixed(2)})`;
+              ctx.fillRect(p.x, p.y, particleSize, particleSize);
+            }
+          }
+        });
+
+        if (vaporizeProgress >= 100 && activeParticles === 0) {
+          if (!doneRef.current) {
+            doneRef.current = true;
+            onComplete?.();
+          }
+          return;
         }
-        return;
       }
 
       rafRef.current = requestAnimationFrame(animate);
@@ -232,11 +247,12 @@ export default function VaporizeText({
 
     rafRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(rafRef.current);
-  }, [particlesRef.current.length, revealDuration, vaporizeDuration, dpr, onComplete]);
+  }, [particlesRef.current.length, revealDuration, vaporizeDuration, dpr, onComplete, fontFamily, fontSize, fontWeight, text]);
 
   return (
-    <div ref={wrapperRef} className="w-full h-full pointer-events-none">
+    <div ref={wrapperRef} className="w-full h-full pointer-events-none flex items-center justify-center">
       <canvas ref={canvasRef} className="pointer-events-none" />
     </div>
   );
 }
+

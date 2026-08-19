@@ -49,7 +49,8 @@ function FloatingBubble({
   return (
     <motion.div
       className="absolute flex items-center justify-center rounded-full
-                 border border-white/10 backdrop-blur-sm cursor-default select-none"
+                 border border-white/10 bg-[#0a0f1e]/80 cursor-default select-none
+                 will-change-transform transform-gpu"
       style={{
         width: size,
         height: size,

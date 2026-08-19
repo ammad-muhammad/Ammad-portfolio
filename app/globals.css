@@ -23,10 +23,41 @@
   }
 }
 
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+main::-webkit-scrollbar,
+::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+section, footer {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.transform-gpu {
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 /* Custom class as backup */
@@ -68,3 +99,75 @@ body {
   80% { opacity: 1; }
   100% { opacity: 0; transform: translateX(10%); }
 }
+
+/* ── Dark Curtain Reveal Transition Styles ─────────────────── */
+.curtain-reveal-wrapper {
+  position: relative;
+  width: 100%;
+  height: 200vh;
+}
+
+.curtain-reveal-sticky {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  will-change: transform;
+}
+
+.curtain-reveal-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  width: 100%;
+  height: 100vh;
+  background-color: #030712;
+  background-image: radial-gradient(circle at 50% 30%, rgba(6, 182, 212, 0.08) 0%, rgba(3, 7, 18, 0.95) 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform, opacity;
+}
+
+.curtain-reveal-content {
+  position: relative;
+  z-index: 40;
+  max-width: 64rem;
+  width: 100%;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  will-change: transform, opacity;
+}
+
+@media (min-width: 768px) {
+  .curtain-reveal-content {
+    flex-direction: row;
+    justify-content: center;
+    gap: 3rem;
+  }
+}
+
+.curtain-reveal-thumbnail {
+  position: relative;
+  flex-shrink: 0;
+  width: 8rem;
+  height: 10rem;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  border: 1px solid rgba(34, 211, 238, 0.35);
+  box-shadow: 0 0 30px rgba(34, 211, 238, 0.25);
+  background: linear-gradient(135deg, rgba(10, 15, 30, 0.95), rgba(6, 11, 20, 0.95));
+}
+
+@media (min-width: 640px) {
+  .curtain-reveal-thumbnail {
+    width: 11rem;
+    height: 13.5rem;
+  }
+}
+
