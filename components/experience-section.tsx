@@ -1,583 +1,242 @@
 "use client";
-import { useRef, useState } from "react";
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import {
-  Briefcase,
-  GraduationCap,
-  Award,
-  MapPin,
-  Calendar,
-} from "lucide-react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
-// ── DATA ──────────────────────────────────────────────────────
+export interface ExperienceItem {
+  id: number;
+  company: string;
+  role: string;
+  period: string;
+  description: string;
+  tags: string[];
+}
 
-const EXPERIENCE = [
+const WORK_EXPERIENCE: ExperienceItem[] = [
   {
     id: 1,
-    type: "work",
-    role: "Backend PHP Laravel Intern",
     company: "JoeyCo Logitech Pvt. Ltd",
-    location: "Karachi, Pakistan",
-    period: "Feb 2023 – Mar 2023",
-    duration: "2 months",
-    color: "#61DAFB",
-    gradient: "from-cyan-500/15 via-blue-500/8 to-transparent",
-    border: "rgba(97,218,251,0.2)",
-    glow: "rgba(97,218,251,0.12)",
-    icon: "🏢",
-    front: {
-      title: "Backend PHP Laravel Intern",
-      company: "JoeyCo Logitech Pvt. Ltd",
-      period: "Feb 2023 – Mar 2023",
-      tags: ["PHP", "Laravel", "MySQL", "Web Dev"],
-    },
-    back: {
-      points: [
-        "Worked on various backend projects gaining real-world web dev experience",
-        "Collaborated with skilled developers on robust & scalable web applications",
-        "Contributed to backend architecture and database design",
-        "Learned professional development workflows and team collaboration",
-      ],
-    },
+    role: "Backend PHP Laravel Intern",
+    period: "Feb 2023 - Mar 2023",
+    description: "Developed RESTful APIs, database schema optimizations, and backend routing systems using PHP Laravel & MySQL.",
+    tags: ["PHP", "Laravel", "MySQL", "REST API"],
   },
   {
     id: 2,
-    type: "work",
-    role: "Frontend & Backend Developer",
     company: "Software House",
-    location: "Karachi, Pakistan",
-    period: "Mar 2023 – Aug 2023",
-    duration: "6 months",
-    color: "#68A063",
-    gradient: "from-green-500/15 via-emerald-500/8 to-transparent",
-    border: "rgba(104,160,99,0.2)",
-    glow: "rgba(104,160,99,0.12)",
-    icon: "💻",
-    front: {
-      title: "Frontend & Backend Developer",
-      company: "Software House",
-      period: "Mar 2023 – Aug 2023",
-      tags: ["Laravel", "React", "Bootstrap", "MySQL", "jQuery"],
-    },
-    back: {
-      points: [
-        "Built responsive UIs using HTML, CSS, Bootstrap and JavaScript",
-        "Developed backend functionalities using Laravel PHP framework",
-        "Worked with MySQL — optimized queries and data validation",
-        "Collaborated with designers to integrate UI/UX concepts into code",
-      ],
-    },
+    role: "Frontend & Backend Developer",
+    period: "Mar 2023 - Aug 2023",
+    description: "Built full-stack web platforms using React, Node.js, Express, and MongoDB with modern responsive UI/UX.",
+    tags: ["React", "Node.js", "Express", "MongoDB"],
   },
 ];
 
-const EDUCATION = [
-  {
-    id: 1,
-    degree: "Bachelors in Computer Science",
-    institution: "Federal Urdu University of Arts, Science & Technology",
-    period: "Mar 2022 – Present",
-    status: "Ongoing",
-    color: "#7952B3",
-    icon: "🎓",
-    tags: ["Computer Science", "Programming", "Data Structures"],
-  },
-];
-
-const CERTIFICATIONS = [
-  {
-    id: 1,
-    title: "Front End Development",
-    issuer: "Jawan Pakistan Institute",
-    period: "Nov 2022 – Feb 2023",
-    color: "#F7DF1E",
-    icon: "🏅",
-    skills: ["HTML", "CSS", "JavaScript", "Bootstrap", "Firebase", "GitHub"],
-    status: "Completed",
-  },
-  {
-    id: 2,
-    title: "Web & Mobile App Development (Full Stack)",
-    issuer: "Saylani Mass IT Training (SMIT)",
-    period: "Sep 2024 – Feb 2026",
-    color: "#61DAFB",
-    icon: "🚀",
-    skills: ["React", "Node.js", "Express.js", "Firebase", "MongoDB"],
-    status: "Completed",
-  },
-];
-
-// ── Flip Card ─────────────────────────────────────────────────
-
-function ExperienceCard({
-  item,
-  index,
-  side,
+export function ExperienceSection({
+  isSectionActive = false,
 }: {
-  item: (typeof EXPERIENCE)[0];
-  index: number;
-  side: "left" | "right";
-}) {
-  const [flipped, setFlipped] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
+  isSectionActive?: boolean;
+} = {}) {
+  const [hoveredId, setHoveredId] = useState<number | null>(null);
+  const [canHover, setCanHover] = useState(false);
 
-  return (
-    <motion.div
-      ref={ref}
-      layout
-      initial={{ opacity: 0, x: side === "left" ? -60 : 60 }}
-      animate={inView ? { opacity: 1, x: 0 } : {}}
-      transition={{
-        duration: 0.7,
-        delay: index * 0.15,
-        ease: [0.25, 0.46, 0.45, 0.94],
-        layout: { duration: 0.4, ease: "easeInOut" }
-      }}
-      className="relative w-full"
-      style={{ perspective: 1200 }}
-    >
-      {/* Flip container */}
-      <motion.div
-        animate={{ rotateY: flipped ? 180 : 0 }}
-        transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-        onClick={() => setFlipped(!flipped)}
-        className="relative w-full cursor-pointer"
-        style={{ transformStyle: "preserve-3d" }}
-      >
-        {/* FRONT */}
-        <div
-          className={`${
-            flipped ? "absolute inset-0 pointer-events-none" : "relative w-full"
-          } rounded-2xl border p-6 flex flex-col gap-4 overflow-hidden`}
-          style={{
-            backfaceVisibility: "hidden",
-            WebkitBackfaceVisibility: "hidden",
-            background: `rgba(255,255,255,0.03)`,
-            borderColor: item.border,
-            boxShadow: `0 4px 24px rgba(0,0,0,0.3), 0 0 40px ${item.glow}`,
-          }}
-        >
-          {/* Glow blob */}
-          <div
-            className="absolute -top-8 -right-8 w-32 h-32 rounded-full blur-3xl opacity-30 pointer-events-none"
-            style={{ background: item.color }}
-          />
+  useEffect(() => {
+    if (isSectionActive) {
+      setHoveredId(null);
+      const timer = setTimeout(() => {
+        setCanHover(true);
+      }, 1800);
+      return () => clearTimeout(timer);
+    } else {
+      setHoveredId(null);
+      setCanHover(false);
+    }
+  }, [isSectionActive]);
 
-          {/* Header */}
-          <div className="flex items-start justify-between gap-3 relative z-10">
-            <div className="flex items-center gap-3">
-              <div
-                className="w-11 h-11 rounded-xl flex items-center justify-center text-xl border flex-shrink-0"
-                style={{
-                  background: `${item.color}15`,
-                  borderColor: `${item.color}30`,
-                }}
-              >
-                {item.icon}
-              </div>
-              <div>
-                <h3 className="text-white font-bold text-base leading-tight">
-                  {item.front.title}
-                </h3>
-                <p
-                  className="font-semibold text-sm mt-0.5"
-                  style={{ color: item.color }}
-                >
-                  {item.front.company}
-                </p>
-              </div>
-            </div>
-            <span
-              className="text-xs px-2 py-1 rounded-lg border flex-shrink-0 font-medium"
-              style={{
-                color: item.color,
-                borderColor: `${item.color}30`,
-                background: `${item.color}12`,
-              }}
-            >
-              {item.duration}
-            </span>
-          </div>
-
-          {/* Meta */}
-          <div className="flex flex-wrap gap-3 text-xs text-white/40 relative z-10">
-            <span className="flex items-center gap-1">
-              <Calendar size={11} /> {item.front.period}
-            </span>
-            <span className="flex items-center gap-1">
-              <MapPin size={11} /> {item.location}
-            </span>
-          </div>
-
-          {/* Tags */}
-          <div className="flex flex-wrap gap-2 relative z-10">
-            {item.front.tags.map((tag) => (
-              <span
-                key={tag}
-                className="text-xs px-2.5 py-1 rounded-full font-medium"
-                style={{ color: item.color, background: `${item.color}12` }}
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-
-          {/* Flip hint */}
-          <div className="mt-auto pt-2 flex justify-end text-white/20 text-xs items-center gap-1">
-            <span>Tap for details</span>
-            <span className="text-base">↩</span>
-          </div>
-        </div>
-
-        {/* BACK */}
-        <div
-          className={`${
-            flipped ? "relative w-full" : "absolute inset-0 pointer-events-none"
-          } rounded-2xl border p-6 flex flex-col gap-4 overflow-hidden`}
-          style={{
-            backfaceVisibility: "hidden",
-            WebkitBackfaceVisibility: "hidden",
-            transform: "rotateY(180deg)",
-            background: "rgba(255,255,255,0.03)",
-            borderColor: item.border,
-            boxShadow: `0 4px 24px rgba(0,0,0,0.3)`,
-            backdropFilter: "blur(12px)",
-          }}
-        >
-          <div className="flex items-center gap-2 mb-1">
-            <Briefcase size={14} style={{ color: item.color }} />
-            <span className="font-bold text-sm" style={{ color: item.color }}>
-              What I did
-            </span>
-          </div>
-          <ul className="flex flex-col gap-3 flex-1">
-            {item.back.points.map((point, i) => (
-              <li
-                key={i}
-                className="flex items-start gap-2.5 text-white/65 text-sm leading-relaxed"
-              >
-                <span
-                  className="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0"
-                  style={{ background: item.color }}
-                />
-                {point}
-              </li>
-            ))}
-          </ul>
-          <div className="text-white/20 text-xs text-right">
-            Tap to flip back ↩
-          </div>
-        </div>
-      </motion.div>
-    </motion.div>
-  );
-}
-
-// ── Timeline Line ─────────────────────────────────────────────
-
-function TimelineLine() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start center", "end center"],
-  });
-  const height = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
-
-  return (
-    <div
-      ref={ref}
-      className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-white/5 hidden lg:block"
-    >
-      <motion.div
-        className="w-full origin-top rounded-full"
-        style={{
-          height,
-          background:
-            "linear-gradient(to bottom, #22d3ee, #3b82f6, #7c3aed)",
-          boxShadow: "0 0 8px rgba(34,211,238,0.4)",
-        }}
-      />
-    </div>
-  );
-}
-
-// ── Certification Card ────────────────────────────────────────
-
-function CertCard({
-  cert,
-  index,
-}: {
-  cert: (typeof CERTIFICATIONS)[0];
-  index: number;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 30 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{
-        duration: 0.5,
-        delay: index * 0.12,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      }}
-      whileHover={{ y: -4, scale: 1.01 }}
-      className="relative p-5 rounded-2xl border overflow-hidden"
-      style={{
-        borderColor: `${cert.color}25`,
-        background: `${cert.color}08`,
-        boxShadow: `0 4px 20px rgba(0,0,0,0.25)`,
-      }}
-    >
-      {/* Glow */}
-      <div
-        className="absolute -top-6 -right-6 w-24 h-24 rounded-full blur-2xl opacity-20 pointer-events-none"
-        style={{ background: cert.color }}
-      />
-
-      <div className="relative z-10 flex flex-col gap-3">
-        <div className="flex items-start justify-between gap-2">
-          <div className="flex items-center gap-2.5">
-            <span className="text-2xl">{cert.icon}</span>
-            <div>
-              <h4 className="text-white font-bold text-sm leading-tight">
-                {cert.title}
-              </h4>
-              <p className="text-sm mt-0.5" style={{ color: cert.color }}>
-                {cert.issuer}
-              </p>
-            </div>
-          </div>
-          <span
-            className="text-xs px-2 py-0.5 rounded-full border font-semibold flex-shrink-0"
-            style={{
-              color:
-                cert.status === "Ongoing" ? "#68A063" : cert.color,
-              borderColor:
-                cert.status === "Ongoing"
-                  ? "rgba(104,160,99,0.3)"
-                  : `${cert.color}30`,
-              background:
-                cert.status === "Ongoing"
-                  ? "rgba(104,160,99,0.1)"
-                  : `${cert.color}10`,
-            }}
-          >
-            {cert.status === "Ongoing" ? "🟢 Ongoing" : "✅ Done"}
-          </span>
-        </div>
-
-        <div className="flex items-center gap-1 text-white/35 text-xs">
-          <Calendar size={10} /> {cert.period}
-        </div>
-
-        <div className="flex flex-wrap gap-1.5">
-          {cert.skills.map((s) => (
-            <span
-              key={s}
-              className="text-xs px-2 py-0.5 rounded-full"
-              style={{ color: cert.color, background: `${cert.color}12` }}
-            >
-              {s}
-            </span>
-          ))}
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-// ── Main Section ──────────────────────────────────────────────
-
-export function ExperienceSection() {
   return (
     <section
       id="experience"
-      className="relative w-full bg-[#030712] overflow-hidden py-10"
+      style={{ backgroundColor: "#111111" }}
+      className="relative w-full h-screen max-h-screen bg-[#111111] text-white overflow-hidden pt-8 sm:pt-12 pb-8 px-6 sm:px-12 lg:px-16 flex flex-col justify-start select-none"
     >
-      {/* Bg glows */}
-      <div className="absolute top-1/3 left-1/3 w-96 h-96 bg-cyan-500/[0.03] rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-1/3 right-1/3 w-96 h-96 bg-purple-500/[0.03] rounded-full blur-[140px] pointer-events-none" />
+      <div
+        style={{ maxWidth: "min(1100px, 85vw)" }}
+        className="exp-container relative mx-auto w-full flex flex-col justify-start"
+      >
 
-      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Step 1: Heading positioned at the top */}
+        <div className="relative mb-6 sm:mb-8 pt-2">
+          {/* Ghost watermark background text */}
+          <motion.span
+            initial={{ opacity: 0, y: -50 }}
+            animate={isSectionActive ? { opacity: 0.05, y: 0 } : { opacity: 0, y: -50 }}
+            transition={{ duration: 1.1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="exp-ghost text-white font-extrabold text-5xl sm:text-7xl lg:text-8xl tracking-[0.2em] uppercase absolute -top-5 sm:-top-9 left-0 select-none pointer-events-none z-0"
+          >
+            EXPERIENCE
+          </motion.span>
 
-        {/* ── EXPERIENCE heading ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="flex items-center gap-3 mb-3"
-        >
-          <span className="text-cyan-400 font-mono text-sm tracking-widest uppercase">
-            04.
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
-            Experience
-          </h2>
-          <div className="flex-1 h-px bg-gradient-to-r from-cyan-500/40 to-transparent ml-4" />
-        </motion.div>
+          {/* Foreground Title & Meta */}
+          <div className="flex items-center justify-between relative z-10 pt-3 sm:pt-5">
+            <motion.h2
+              initial={{ opacity: 0, y: -35 }}
+              animate={isSectionActive ? { opacity: 1, y: 0 } : { opacity: 0, y: -35 }}
+              transition={{ duration: 1.1, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="text-xl sm:text-3xl lg:text-4xl font-bold text-white tracking-wider uppercase"
+            >
+              /EXPERIENCE
+            </motion.h2>
 
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="text-white/40 text-base max-w-xl mb-14"
-        >
-          My professional journey — tap cards to flip and see details.
-        </motion.p>
-
-        {/* Timeline */}
-        <div className="relative mb-24">
-          <TimelineLine />
-
-          <div className="flex flex-col gap-8 lg:gap-12">
-            {EXPERIENCE.map((item, i) => {
-              const side = i % 2 === 0 ? "left" : "right";
-              return (
-                <div
-                  key={item.id}
-                  className="relative flex flex-col lg:flex-row items-center gap-4 lg:gap-8"
-                >
-                  {/* Left slot */}
-                  <div className="w-full lg:w-[calc(50%-2rem)]">
-                    {side === "left" ? (
-                      <ExperienceCard item={item} index={i} side="left" />
-                    ) : (
-                      <div className="hidden lg:block" />
-                    )}
-                  </div>
-
-                  {/* Center dot */}
-                  <div className="hidden lg:flex flex-col items-center flex-shrink-0">
-                    <motion.div
-                      initial={{ scale: 0, opacity: 0 }}
-                      whileInView={{ scale: 1, opacity: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.4, delay: i * 0.15 + 0.2 }}
-                      className="w-10 h-10 rounded-full border-2 flex items-center justify-center text-lg z-10 relative"
-                      style={{
-                        background: "#030712",
-                        borderColor: item.color,
-                        boxShadow: `0 0 16px ${item.color}50, 0 0 32px ${item.color}25`,
-                      }}
-                    >
-                      {item.icon}
-                    </motion.div>
-                  </div>
-
-                  {/* Right slot */}
-                  <div className="w-full lg:w-[calc(50%-2rem)]">
-                    {side === "right" ? (
-                      <ExperienceCard item={item} index={i} side="right" />
-                    ) : (
-                      <div className="hidden lg:block" />
-                    )}
-                  </div>
-                </div>
-              );
-            })}
+            <motion.p
+              initial={{ opacity: 0, y: -25 }}
+              animate={isSectionActive ? { opacity: 1, y: 0 } : { opacity: 0, y: -25 }}
+              transition={{ duration: 1.1, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
+              className="text-xs sm:text-sm font-medium text-gray-400 font-mono"
+            >
+              1+ years of experience
+            </motion.p>
           </div>
         </div>
 
-        {/* ── EDUCATION heading ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="flex items-center gap-3 mb-8"
+        {/* Step 2: Work Experience Rows */}
+        <div
+          className="flex flex-col gap-2 mt-14 sm:mt-20"
+          onMouseLeave={() => setHoveredId(null)}
         >
-          <GraduationCap size={22} className="text-purple-400" />
-          <h3 className="text-2xl font-extrabold text-white">Education</h3>
-          <div className="flex-1 h-px bg-gradient-to-r from-purple-500/30 to-transparent ml-3" />
-        </motion.div>
+          {WORK_EXPERIENCE.map((item, i) => {
+            const isHovered = hoveredId === item.id;
 
-        {EDUCATION.map((edu) => (
-          <motion.div
-            key={edu.id}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            whileHover={{ y: -4 }}
-            className="relative p-6 rounded-2xl border mb-16 overflow-hidden"
-            style={{
-              borderColor: `${edu.color}25`,
-              background: `${edu.color}06`,
-              boxShadow: `0 4px 24px rgba(0,0,0,0.3)`,
-            }}
-          >
-            <div
-              className="absolute -top-10 -right-10 w-40 h-40 rounded-full blur-3xl opacity-15 pointer-events-none"
-              style={{ background: edu.color }}
-            />
-            <div className="relative z-10 flex flex-col sm:flex-row sm:items-center gap-4">
-              <div
-                className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl border flex-shrink-0"
-                style={{
-                  background: `${edu.color}15`,
-                  borderColor: `${edu.color}30`,
+            return (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, y: 50 }}
+                animate={isSectionActive ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+                transition={{
+                  duration: 1.2,
+                  delay: 1.15 + i * 0.22,
+                  ease: [0.16, 1, 0.3, 1],
                 }}
+                onMouseEnter={() => {
+                  if (canHover) setHoveredId(item.id);
+                }}
+                onMouseLeave={() => setHoveredId(null)}
+                className="relative w-full cursor-pointer rounded-xl"
               >
-                {edu.icon}
-              </div>
-              <div className="flex-1">
-                <h4 className="text-white font-bold text-lg">{edu.degree}</h4>
-                <p
-                  style={{ color: edu.color }}
-                  className="font-semibold text-sm mt-0.5"
+                <div
+                  style={{
+                    backgroundColor: isHovered ? "rgba(255, 255, 255, 0.05)" : "transparent",
+                  }}
+                  className={`exp-row w-full transition-all duration-300 py-4 sm:py-5 px-4 sm:px-5 border-t border-gray-800 flex items-center justify-between relative ${
+                    isHovered
+                      ? "rounded-xl border-transparent"
+                      : "hover:bg-white/[0.02]"
+                  }`}
                 >
-                  {edu.institution}
-                </p>
-                <div className="flex items-center gap-4 mt-2 text-white/35 text-xs">
-                  <span className="flex items-center gap-1">
-                    <Calendar size={11} />
-                    {edu.period}
-                  </span>
-                  <span className="text-green-400 font-semibold">
-                    🟢 {edu.status}
-                  </span>
+                  {/* Left Side: Company & Role */}
+                  <div className="flex flex-col gap-0.5 z-10 max-w-md">
+                    <h3 className="text-base sm:text-xl font-bold text-white tracking-tight">
+                      {item.company}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-gray-400 font-medium">
+                      {item.role}
+                    </p>
+                  </div>
+
+                  {/* Right Side: Period */}
+                  <div className="flex items-center gap-4 z-10">
+                    <span className="exp-period text-xs sm:text-sm font-mono text-gray-500">
+                      {item.period}
+                    </span>
+                  </div>
+
+                  {/* Floating Details Card */}
+                  <AnimatePresence>
+                    {isHovered && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 18, scale: 0.92, rotate: 6 }}
+                        animate={{ opacity: 1, y: -22, scale: 1, rotate: -3 }}
+                        exit={{ opacity: 0, y: 12, scale: 0.92 }}
+                        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                        className="absolute right-36 sm:right-52 -top-10 sm:-top-14 z-30 w-52 sm:w-64 rounded-2xl bg-[#1c1c1c] text-white p-4 shadow-2xl border border-gray-700 pointer-events-none flex flex-col gap-2"
+                      >
+                        <div className="flex items-center justify-between border-b border-gray-700 pb-2">
+                          <span className="text-xs font-black text-white tracking-tight">
+                            WORK HIGHLIGHTS
+                          </span>
+                          <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-white/10 text-gray-300">
+                            {item.period}
+                          </span>
+                        </div>
+
+                        <p className="text-xs text-gray-300 leading-relaxed font-medium pt-0.5">
+                          {item.description}
+                        </p>
+
+                        <div className="flex flex-wrap gap-1.5 pt-1">
+                          {item.tags.map((tag) => (
+                            <span
+                              key={tag}
+                              className="px-2 py-0.5 rounded-full bg-white/10 border border-white/10 text-[10px] font-semibold text-gray-200"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
                 </div>
-              </div>
-              <div className="flex flex-wrap gap-1.5">
-                {edu.tags.map((t) => (
-                  <span
-                    key={t}
-                    className="text-xs px-2.5 py-1 rounded-full"
-                    style={{ color: edu.color, background: `${edu.color}12` }}
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        ))}
+              </motion.div>
+            );
+          })}
 
-        {/* ── CERTIFICATIONS heading ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="flex items-center gap-3 mb-8"
-        >
-          <Award size={22} className="text-yellow-400" />
-          <h3 className="text-2xl font-extrabold text-white">Certifications</h3>
-          <div className="flex-1 h-px bg-gradient-to-r from-yellow-500/30 to-transparent ml-3" />
-        </motion.div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          {CERTIFICATIONS.map((cert, i) => (
-            <CertCard key={cert.id} cert={cert} index={i} />
-          ))}
+          <div className="exp-gap border-t border-gray-800" />
         </div>
 
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .exp-ghost {
+            font-size: clamp(2.5rem, 15vw, 4rem) !important;
+            top: -16px !important;
+            left: 0 !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            max-width: 100% !important;
+          }
+          .exp-container {
+            padding: 60px 20px !important;
+          }
+          .exp-inner {
+            padding: 0 !important;
+          }
+          .exp-row {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 4px !important;
+            padding: 18px 0 !important;
+          }
+          .exp-period {
+            font-size: 11px !important;
+          }
+          .exp-gap {
+            display: none !important;
+          }
+        }
+        @media (min-width: 1441px) {
+          #experience .exp-container {
+            max-width: min(1300px, 85vw) !important;
+          }
+          #experience .exp-ghost {
+            font-size: clamp(5rem, 8vw, 9rem) !important;
+          }
+        }
+        @media (min-width: 2000px) {
+          #experience .exp-container {
+            max-width: min(1600px, 80vw) !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

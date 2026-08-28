@@ -40,7 +40,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Nosifer&display=swap" rel="stylesheet" />
       </head>
-      <body className="min-h-full flex flex-col bg-[#030712]" suppressHydrationWarning>
+      <body className="min-h-full flex flex-col bg-white" suppressHydrationWarning>
         <SiteWrapper>{children}</SiteWrapper>
       </body>
     </html>
