@@ -4,7 +4,7 @@ import { ArrowUpRight } from "lucide-react";
 
 const STATS = [
   { value: "1",  label: "Years of Experience" },
-  { value: "3", label: "Projects Built"       },
+  { value: "5+", label: "Projects Built"       },
   { value: "2",   label: "Certifications"       },
   { value: "1",   label: "Hackathon Won"        },
 ];
@@ -19,10 +19,7 @@ export function AboutSection({
       id="about"
       className="relative w-full h-screen max-h-screen bg-white text-gray-900 overflow-hidden pt-3 sm:pt-6 pb-4 px-6 sm:px-12 lg:px-16 flex flex-col justify-center select-none"
     >
-      <div
-        style={{ maxWidth: "min(1100px, 85vw)" }}
-        className="relative mx-auto w-full flex flex-col justify-center"
-      >
+      <div className="relative max-w-6xl mx-auto w-full flex flex-col justify-center">
 
         {/* Step 1: Ghost Header & Title (Animates DOWN from Top FIRST) */}
         <div className="relative flex flex-col justify-start mb-4 sm:mb-6 pt-1">
@@ -50,7 +47,7 @@ export function AboutSection({
         </div>
 
         {/* Main split layout */}
-        <div className="about-grid grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-14 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-14 items-center">
 
           {/* Step 2: LEFT Content (Animates in from LEFT TO RIGHT SECOND) */}
           <motion.div
@@ -95,8 +92,8 @@ export function AboutSection({
                 <ArrowUpRight size={14} />
               </a>
               <a
-                href="/resume.docx"
-                download="Muhammad_Ammad_Resume.docx"
+                href="/resume.pdf"
+                download
                 className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full border border-gray-200 bg-white text-gray-900 text-xs font-semibold hover:border-black transition-all shadow-sm"
               >
                 <span>Download CV</span>
@@ -133,22 +130,6 @@ export function AboutSection({
         </div>
 
       </div>
-
-      <style>{`
-        @media (min-width: 1441px) {
-          .about-grid {
-            max-width: 1300px !important;
-            margin: 0 auto !important;
-            gap: 100px !important;
-          }
-        }
-        @media (min-width: 2000px) {
-          .about-grid {
-            max-width: 1600px !important;
-            gap: 120px !important;
-          }
-        }
-      `}</style>
     </section>
   );
 }
