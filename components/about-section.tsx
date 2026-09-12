@@ -4,7 +4,7 @@ import { ArrowUpRight } from "lucide-react";
 
 const STATS = [
   { value: "1",  label: "Years of Experience" },
-  { value: "5+", label: "Projects Built"       },
+  { value: "3", label: "Projects Built"       },
   { value: "2",   label: "Certifications"       },
   { value: "1",   label: "Hackathon Won"        },
 ];

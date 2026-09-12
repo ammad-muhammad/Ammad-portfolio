@@ -47,7 +47,7 @@ This repository houses the modern, high-performance personal portfolio of **Muha
 - **Hero Section**: Editorial big split stroke typography (`MUHAMMAD` outlined / `AMMAD` solid), cut-out portrait reveal, role bio, and quick social links.
 - **About Section**: Watermark background typography, dynamic developer bio, key metric counters, and one-click ATS Word Resume (`.docx`) download.
 - **Skills & Technologies**: 16-skill icon grid featuring modern frontend, backend, database, and cloud toolsets.
-- **Projects / Selected Work**: Showcase of real-world SaaS products (**ClinicAI**, **DevMind AI**) with comprehensive Architecture & Feature Breakdown Modals.
+- **Projects / Selected Work**: Showcase of production-grade SaaS products (**Hirely**, **ClinicAI**, **DevMind AI**) with comprehensive Architecture & Feature Breakdown Modals.
 - **Services**: Interactive service cards with real-time UI mockup hover previews.
 - **Experience**: Dark theme (`#111111`) interactive timeline with floating work highlight badge overlays.
 - **Contact & Footer**: Dual-column dark/light layout with interactive service selector, EmailJS client submission, and compact single-line footer.

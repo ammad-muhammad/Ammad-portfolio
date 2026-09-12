@@ -28,6 +28,47 @@ export interface ProjectItem {
 const PROJECTS: ProjectItem[] = [
   {
     id: 1,
+    title: "Hirely",
+    subtitle: "AI-Powered Job Search & Recruitment SaaS Platform",
+    description:
+      "Production-grade, full-stack recruitment SaaS platform connecting ambitious tech professionals with verified employers through AI candidate matching, automated ATS screening, verified skill assessments, and fraud-resistant employer verification.",
+    fullOverview:
+      "Hirely transforms the recruitment lifecycle into a high-signal, transparent ecosystem. Built with Next.js 14, Node.js/Express, MongoDB, Socket.io, and Groq Llama-3, it solves hiring friction with automated ATS resume auditing, AI cover letter drafting, timed anti-cheat skill assessments with verifiable badges, and intelligent auto-apply assistance. For employers, it delivers multi-step job posting with AI description polishing, verified business onboarding (NTN/Incorporation docs), candidate evaluation pipelines, and natural language AI talent search. Admins gain 30-day time-series executive analytics, automated fraud detection heuristics, and granular sub-admin permission management.",
+    tags: [
+      "Next.js 14",
+      "TypeScript",
+      "Node.js",
+      "Express.js",
+      "MongoDB",
+      "Socket.io",
+      "Tailwind CSS",
+      "Groq AI",
+      "Playwright",
+    ],
+    category: "Full Stack",
+    badge: "REAL PROJECT",
+    image: "/hirely.png",
+    color: "#111111",
+    live: "https://hirely-ai-powered-job-platform.vercel.app/",
+    github: "https://github.com/ammad-muhammad/Hirely---AI-powered-job-platform",
+    featured: true,
+    year: "2026",
+    roles: [
+      "Job Seeker: Dynamic profile builder, AI resume audit, AI cover letter generator, timed skill assessments & auto-apply assistant",
+      "Employer: Multi-step job posting wizard, business verification (NTN/docs), candidate evaluation pipeline & AI talent assistant",
+      "Admin: Executive 30-day time-series analytics, fraud detection engine, employer verification queue & sub-admin permissions",
+    ],
+    highlights: [
+      "Role-Based Access Control (Job Seeker, Employer, Super Admin, Sub-Admin)",
+      "Real-Time Bi-Directional Chat & Instant Notifications via Socket.io",
+      "Groq Llama-3 AI Engine for ATS Resume Scoring & Cover Letter Drafting",
+      "Timed Anti-Cheat Skill Assessments with Verifiable Badges",
+      "Automated Heuristic Fraud Detection & Document Verification Workflows",
+      "Playwright End-to-End Test Automation Suite (13 User Journeys)",
+    ],
+  },
+  {
+    id: 2,
     title: "ClinicAI",
     subtitle: "Smart Clinical SaaS Platform",
     description:
@@ -47,18 +88,18 @@ const PROJECTS: ProjectItem[] = [
       "Admin: Global staff provisioning, audit logs & analytics",
       "Doctor: Consultation queue, digital Rx & AI draft reply",
       "Receptionist: Department-scoped scheduling & token generation (Q-001)",
-      "Patient: 24/7 Booking, AI symptom checker & Rx explainer"
+      "Patient: 24/7 Booking, AI symptom checker & Rx explainer",
     ],
     highlights: [
       "Role-Based Access Control (Admin, Doctor, Receptionist, Patient)",
       "Department-Scoped Receptionist Queue & Daily Token Generation",
       "Structured Digital Prescriptions & Medical Record Linking",
       "Groq AI Server-Mediated Symptom Analysis & Rx Explainer",
-      "Real-Time Socket.IO Doctor-Patient Messaging & AI Suggestions"
-    ]
+      "Real-Time Socket.IO Doctor-Patient Messaging & AI Suggestions",
+    ],
   },
   {
-    id: 2,
+    id: 3,
     title: "DevMind AI",
     subtitle: "AI Coding Assistant & Developer Workbench",
     description:
@@ -78,8 +119,8 @@ const PROJECTS: ProjectItem[] = [
       "Context-Aware Code Debugging & Explanation",
       "Interactive UI Component Generation & Live Preview",
       "Secure JWT User Authentication & Saved History",
-      "Developer Markdown Syntax Highlighting"
-    ]
+      "Developer Markdown Syntax Highlighting",
+    ],
   },
 ];
 
