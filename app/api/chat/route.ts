@@ -45,13 +45,15 @@ CERTIFICATIONS:
 2. Web & Mobile App Development Full Stack - Saylani Mass IT Training SMIT (Ongoing)
 
 PROJECTS:
-1. AI PitchCraft (Hackathon Winner at SMIT) - React, Firebase, Gemini AI API
-2. Taxero Solution (Client Project) - HTML, CSS, JavaScript, Bootstrap
-3. Personal Portfolio v2 & Web Apps
+1. Hirely (AI-Powered Job Search & Recruitment SaaS Platform) - Next.js 14, TypeScript, Node.js, Express.js, MongoDB, Socket.io, Groq AI, Playwright (Live: https://hirely-ai-powered-job-platform.vercel.app/ | GitHub: https://github.com/ammad-muhammad/Hirely---AI-powered-job-platform)
+2. ClinicAI (Smart Clinical SaaS Platform) - Next.js 16, React 19, Express.js, MongoDB, Groq AI, Socket.IO
+3. DevMind AI (AI Coding Assistant & Developer Workbench) - React, Node.js, Gemini AI, JWT, Express
+4. AI PitchCraft (Hackathon Winner at SMIT) - React, Firebase, Gemini AI API
+5. Taxero Solution (Client Project) - HTML, CSS, JavaScript, Bootstrap
 
 COMMON ANSWERS:
 - Available for work: YES, actively open for Full Stack Web & Mobile opportunities.
-- Strongest skill: Next.js, React, Node.js, and Full-Stack Development.
+- Strongest skill: Next.js, React, Node.js, TypeScript, Groq AI, and Full-Stack SaaS Development.
 - Contact: official.muhammadammad@gmail.com or via the Contact form on the site.`;
 
 export async function POST(req: NextRequest) {

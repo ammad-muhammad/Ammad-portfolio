@@ -4,7 +4,7 @@ import { ArrowUpRight } from "lucide-react";
 
 const STATS = [
   { value: "1",  label: "Years of Experience" },
-  { value: "5+", label: "Projects Built"       },
+  { value: "3", label: "Projects Built"       },
   { value: "2",   label: "Certifications"       },
   { value: "1",   label: "Hackathon Won"        },
 ];
@@ -92,8 +92,8 @@ export function AboutSection({
                 <ArrowUpRight size={14} />
               </a>
               <a
-                href="/resume.pdf"
-                download
+                href="/Muhammad_Ammad_ATS_Resume.docx"
+                download="Muhammad_Ammad_ATS_Resume.docx"
                 className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full border border-gray-200 bg-white text-gray-900 text-xs font-semibold hover:border-black transition-all shadow-sm"
               >
                 <span>Download CV</span>

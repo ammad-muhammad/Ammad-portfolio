@@ -154,8 +154,46 @@ export function HeroToNextTransition() {
   useEffect(() => {
     if (shouldReduceMotion) return;
 
+    const isModalOpen = (target?: HTMLElement | null) => {
+      try {
+        if (typeof document !== "undefined" && document.querySelector('[data-project-modal="true"], [role="dialog"]')) {
+          return true;
+        }
+        if (target?.closest?.('[data-project-modal="true"], [role="dialog"]')) {
+          return true;
+        }
+      } catch {
+        return false;
+      }
+      return false;
+    };
+
     const handleWheel = (e: WheelEvent) => {
+      if (isModalOpen(e.target as HTMLElement | null)) {
+        return;
+      }
+
       const scrollY = window.scrollY;
+
+      // When in the Projects section (Index 3), prioritize smooth natural internal scrolling
+      if (activeIdx === 3) {
+        const scrollable = document.querySelector("[data-scrollable-projects]") as HTMLElement | null;
+        if (scrollable) {
+          const atBottom = scrollable.scrollHeight - scrollable.scrollTop <= scrollable.clientHeight + 15;
+          const atTop = scrollable.scrollTop <= 5;
+
+          if (e.deltaY > 5 && !atBottom) {
+            scrollable.scrollBy({ top: e.deltaY * 1.5, behavior: "smooth" });
+            e.preventDefault();
+            return;
+          }
+          if (e.deltaY < -5 && !atTop) {
+            scrollable.scrollBy({ top: e.deltaY * 1.5, behavior: "smooth" });
+            e.preventDefault();
+            return;
+          }
+        }
+      }
 
       // Downward wheel gesture
       if (e.deltaY > 5) {
@@ -179,9 +217,30 @@ export function HeroToNextTransition() {
 
     const handleTouchMove = (e: TouchEvent) => {
       if (isAnimating.current) return;
+      if (isModalOpen(e.target as HTMLElement | null)) {
+        return;
+      }
+
       const touchEndY = e.touches[0].clientY;
       const deltaY = touchStartY.current - touchEndY;
       const scrollY = window.scrollY;
+
+      if (activeIdx === 3) {
+        const scrollable = document.querySelector("[data-scrollable-projects]") as HTMLElement | null;
+        if (scrollable) {
+          const atBottom = scrollable.scrollHeight - scrollable.scrollTop <= scrollable.clientHeight + 15;
+          const atTop = scrollable.scrollTop <= 5;
+
+          if (deltaY > 20 && !atBottom) {
+            scrollable.scrollBy({ top: deltaY, behavior: "smooth" });
+            return;
+          }
+          if (deltaY < -20 && !atTop) {
+            scrollable.scrollBy({ top: deltaY, behavior: "smooth" });
+            return;
+          }
+        }
+      }
 
       if (deltaY > 30 && activeIdx < SECTIONS.length - 1) {
         handleNext();
