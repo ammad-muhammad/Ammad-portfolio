@@ -99,7 +99,7 @@ export function ExperienceSection({
               transition={{ duration: 1.1, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
               className="text-xs sm:text-sm font-medium text-gray-400 font-mono"
             >
-              3+ years of experience
+              2 years of experience
             </motion.p>
           </div>
         </div>
