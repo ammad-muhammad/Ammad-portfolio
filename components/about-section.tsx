@@ -3,10 +3,10 @@ import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 
 const STATS = [
-  { value: "1",  label: "Years of Experience" },
-  { value: "3", label: "Projects Built"       },
-  { value: "2",   label: "Certifications"       },
-  { value: "1",   label: "Hackathon Won"        },
+  { value: "2", label: "Years of Experience" },
+  { value: "3",  label: "Projects Built"       },
+  { value: "2",  label: "Certifications"       },
+  { value: "1",  label: "Hackathon Won"        },
 ];
 
 export function AboutSection({

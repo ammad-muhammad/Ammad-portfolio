@@ -34,7 +34,7 @@ export function Footer() {
             </a>
           ))}
           <span className="text-gray-300">|</span>
-          <span className="text-gray-400">© 2025 Muhammad Ammad</span>
+          <span className="text-gray-400">© 2026 Muhammad Ammad</span>
         </div>
 
       </div>

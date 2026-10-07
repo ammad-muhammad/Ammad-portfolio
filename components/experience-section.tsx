@@ -14,11 +14,11 @@ export interface ExperienceItem {
 const WORK_EXPERIENCE: ExperienceItem[] = [
   {
     id: 1,
-    company: "JoeyCo Logitech Pvt. Ltd",
-    role: "Backend PHP Laravel Intern",
-    period: "Feb 2023 - Mar 2023",
-    description: "Developed RESTful APIs, database schema optimizations, and backend routing systems using PHP Laravel & MySQL.",
-    tags: ["PHP", "Laravel", "MySQL", "REST API"],
+    company: "Freelance (Self-Employed)",
+    role: "Full Stack Web Developer",
+    period: "Sep 2023 - Apr 2026",
+    description: "Delivered freelance full-stack web solutions for independent clients using React, Next.js, Express, and MongoDB with modern responsive UIs and robust backend APIs.",
+    tags: ["Next.js", "React", "Express.js", "MongoDB", "Node.js"],
   },
   {
     id: 2,
@@ -27,6 +27,14 @@ const WORK_EXPERIENCE: ExperienceItem[] = [
     period: "Mar 2023 - Aug 2023",
     description: "Built full-stack web platforms using React, Node.js, Express, and MongoDB with modern responsive UI/UX.",
     tags: ["React", "Node.js", "Express", "MongoDB"],
+  },
+  {
+    id: 3,
+    company: "JoeyCo Logitech Pvt. Ltd",
+    role: "Backend PHP Laravel Intern",
+    period: "Feb 2023 - Mar 2023",
+    description: "Developed RESTful APIs, database schema optimizations, and backend routing systems using PHP Laravel & MySQL.",
+    tags: ["PHP", "Laravel", "MySQL", "REST API"],
   },
 ];
 
@@ -91,14 +99,14 @@ export function ExperienceSection({
               transition={{ duration: 1.1, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
               className="text-xs sm:text-sm font-medium text-gray-400 font-mono"
             >
-              1+ years of experience
+              3+ years of experience
             </motion.p>
           </div>
         </div>
 
         {/* Step 2: Work Experience Rows */}
         <div
-          className="flex flex-col gap-2 mt-14 sm:mt-20"
+          className="flex flex-col gap-2 mt-8 sm:mt-14"
           onMouseLeave={() => setHoveredId(null)}
         >
           {WORK_EXPERIENCE.map((item, i) => {

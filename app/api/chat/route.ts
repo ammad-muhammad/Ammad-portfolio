@@ -28,10 +28,12 @@ EDUCATION:
 - March 2022 - Present (Ongoing)
 
 EXPERIENCE:
-1. Backend PHP Laravel Intern at JoeyCo Logitech Pvt. Ltd (Feb 2023 - Mar 2023)
-   - Backend development, APIs, scalable web applications
+1. Freelance Web Developer (Self-Employed) (Sep 2023 - Apr 2026)
+   - Delivered full-stack freelance projects for independent clients using React, Next.js, Express.js, MongoDB
 2. Frontend & Backend Developer at Software House (Mar 2023 - Aug 2023)
    - Built responsive UIs and backend solutions with PHP, MySQL, JavaScript
+3. Backend PHP Laravel Intern at JoeyCo Logitech Pvt. Ltd (Feb 2023 - Mar 2023)
+   - Backend development, APIs, scalable web applications
 
 SKILLS:
 - Frontend: React, Next.js, HTML5, CSS3, JavaScript, TypeScript, Tailwind CSS, Bootstrap

@@ -20,7 +20,15 @@ const acme = Acme({ weight: '400', subsets: ['latin'], variable: '--font-acme' }
 
 export const metadata: Metadata = {
   title: "Muhammad Ammad | Portfolio",
-  description: "Frontend Developer from Karachi, building modern web experiences with React & Next.js.",
+  description: "Full Stack Web & Mobile Developer from Karachi, building modern web experiences with React & Next.js.",
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "32x32" },
+    ],
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
 };
 
 import SiteWrapper from "@/components/site-wrapper";
@@ -36,6 +44,9 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable} ${orbitron.variable} ${righteous.variable} ${nosifer.variable} ${acme.variable} h-full antialiased`}
     >
       <head>
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="alternate icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/favicon.svg" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Nosifer&display=swap" rel="stylesheet" />
